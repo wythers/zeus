@@ -41,13 +41,9 @@ namespace zeus {
  *  - Pool must be unique in the one project
  *  - T
  *  - clusterSize must be a power of 2, default is 8
-<<<<<<< HEAD
-=======
- * 
->>>>>>> a00cb81757e2cbde8e819ee25181b5109fe80b14
  *
  *  @authors
- * 	- Stanv Chou
+ *  - Stanv Chou
  *  - Wyther Yang
  * */
 template <typename T, size_t clusterSize = 8>
