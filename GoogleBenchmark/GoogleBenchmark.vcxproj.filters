@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="GoogleBenchmark.cpp" />
+    <ClCompile Include="benchmark.cc" />
+    <ClCompile Include="benchmark_api_internal.cc" />
+    <ClCompile Include="benchmark_main.cc" />
+    <ClCompile Include="benchmark_name.cc" />
+    <ClCompile Include="benchmark_register.cc" />
+    <ClCompile Include="benchmark_runner.cc" />
+    <ClCompile Include="colorprint.cc" />
+    <ClCompile Include="commandlineflags.cc" />
+    <ClCompile Include="complexity.cc" />
+    <ClCompile Include="console_reporter.cc" />
+    <ClCompile Include="counter.cc" />
+    <ClCompile Include="csv_reporter.cc" />
+    <ClCompile Include="json_reporter.cc" />
+    <ClCompile Include="reporter.cc" />
+    <ClCompile Include="sleep.cc" />
+    <ClCompile Include="statistics.cc" />
+    <ClCompile Include="string_util.cc" />
+    <ClCompile Include="sysinfo.cc" />
+    <ClCompile Include="timers.cc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="arraysize.h" />
+    <ClInclude Include="benchmark.h" />
+    <ClInclude Include="benchmark_api_internal.h" />
+    <ClInclude Include="benchmark_register.h" />
+    <ClInclude Include="benchmark_runner.h" />
+    <ClInclude Include="check.h" />
+    <ClInclude Include="colorprint.h" />
+    <ClInclude Include="commandlineflags.h" />
+    <ClInclude Include="complexity.h" />
+    <ClInclude Include="counter.h" />
+    <ClInclude Include="cycleclock.h" />
+    <ClInclude Include="internal_macros.h" />
+    <ClInclude Include="log.h" />
+    <ClInclude Include="mutex.h" />
+    <ClInclude Include="re.h" />
+    <ClInclude Include="sleep.h" />
+    <ClInclude Include="statistics.h" />
+    <ClInclude Include="string_util.h" />
+    <ClInclude Include="thread_manager.h" />
+    <ClInclude Include="thread_timer.h" />
+    <ClInclude Include="timers.h" />
+  </ItemGroup>
+</Project>
