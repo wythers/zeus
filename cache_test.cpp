@@ -1,4 +1,3 @@
-#pragma once
 // Copyright (C) 2021- 
 
 #define ZEUS_LIBRARY_DEBUG
@@ -11,39 +10,6 @@
 
 using namespace zeus;
 using namespace std;
-
-
-
-using Case = int (*)();
-
-/**
- * zeus::pool unit test.
-*/
-/*
-int mainn() {
-        Case    cases[4]{
-                        test_cache_case1,
-                        test_cache_case2,
-                        test_cache_case3,
-                        test_cache_case4
-                };
-
-        char const* hdr = "zeus::pooll test case #";
-        for (int i = 0; i < 4; i++) {
-                int ret = cases[i]();
-                printf( "=== RUN %s%d "
-                        "--------------"
-                        "-------------- %s\n", 
-                        hdr, i+1,
-                        ret == PASSED ? "passed" : "fail");
-        }
-
-        return 0;
-}
-*/
-
-
-
 struct tester {
         atomic_ulong& cnt;
         tester(atomic<ulong>& c) : cnt(c)  {
@@ -53,10 +19,41 @@ struct tester {
                 cnt--;
         }
 };
-//zeus::Pool<tester, 8> pool{};
-// construction/destruction test
-int test_cache_case1(auto& pool) {
-//        zeus::Pool<tester, 8> pool{};
+
+int test_cache_case1(zeus::Pool<tester, 16>&);
+int test_cache_case2(zeus::Pool<tester, 16>&);
+int test_cache_case3(zeus::Pool<tester, 16>&);
+int test_cache_case4(zeus::Pool<tester, 16>&);
+
+using Case = int (*)(zeus::Pool<tester, 16>&);
+
+/**
+ * zeus::pool unit test.
+*/
+
+int main() {
+		zeus::Pool<tester, 16> pool{};
+        Case  cases[4]{
+                        test_cache_case1,
+                        test_cache_case2,
+                        test_cache_case3,
+                        test_cache_case4
+                };
+
+        char const* hdr = "zeus::pooll test case #";
+        for (int i = 0; i < 4; i++) {
+                int ret = cases[i](pool);
+                printf( "=== RUN %s%d "
+                        "--------------"
+                        "-------------- %s\n", 
+                        hdr, i+1,
+                        ret == PASSED ? "passed" : "fail");
+        }
+
+        return 0;
+}
+
+int test_cache_case1(zeus::Pool<tester, 16>& pool) {
         atomic_ulong cnt = 0;
         vector<thread> ths{};
         atomic_bool flag = false;
@@ -80,9 +77,8 @@ int test_cache_case1(auto& pool) {
 }
 
 // one to one
-int test_cache_case2() {
-        zeus::Pool<tester, 8> pool{};
-        auto [Vcnt, Ccnt] = decltype(pool)::ZeusUnitMonitor();
+int test_cache_case2(zeus::Pool<tester, 16>& pool) {
+        auto [Vcnt, Ccnt] = decay_t<decltype(pool)>::ZeusUnitMonitor();
         atomic_ulong cnt{}; 
         atomic_bool flag{};  
 
@@ -109,13 +105,12 @@ int test_cache_case2() {
 }
 
 // many to one
-int test_cache_case3() {
-        zeus::Pool<tester, 8> pool{};
+int test_cache_case3(zeus::Pool<tester, 16>& pool) {
         atomic_ulong cnt = 0;
         atomic_uint cnt2 = 0;
         vector<thread> ths{};
         
-        auto [Vcnt, Ccnt] = decltype(pool)::ZeusUnitMonitor();
+        auto [Vcnt, Ccnt] = decay_t<decltype(pool)>::ZeusUnitMonitor();
 
         for (uint i = 0; i < 4; i++) {
                 ths.emplace_back(thread([&]{
@@ -142,13 +137,12 @@ int test_cache_case3() {
 }
 
 // many to many
-int test_cache_case4() {
-        zeus::Pool<tester, 16> pool{};
+int test_cache_case4(zeus::Pool<tester, 16>& pool) {
         atomic_ulong cnt = 0;
         atomic_uint cnt2 = 0;
         vector<thread> ths{};
         
-        auto [Vcnt, Ccnt] = decltype(pool)::ZeusUnitMonitor();
+        auto [Vcnt, Ccnt] = decay_t<decltype(pool)>::ZeusUnitMonitor();
 
         for (uint i = 0; i < 8; i++) {
                 ths.emplace_back(thread([&]{
