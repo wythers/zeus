@@ -40,7 +40,7 @@ int main() {
                         test_cache_case4
                 };
 
-        char const* hdr = "zeus::pooll test case #";
+        char const* hdr = "zeus::pool test case #";
         for (int i = 0; i < 4; i++) {
                 int ret = cases[i](pool);
                 printf( "=== RUN %s%d "
