@@ -41,19 +41,6 @@ namespace zeus {
  *  - T  
  *  - clusterSize must be a power of 2, default is 8
  * 
- *  @b code:
- * 	- 
- * 		Pool<sourceType, clusterSize> pool{};
- * 		// ... code
- *    thread th([&]{
- * 				// .... code
- * 				  sourceType* single = p.Get(construction args...);
- * 				// ... code
- * 					p.Put(single);
- * 		});
- * 		// ... code
- * 
- * 
  *  @authors
  * 	- Stanv Chou 
  *  - Wyther Yang

@@ -6,7 +6,7 @@
 #include <iostream>
 
 #define PASSED 0
-#define N  10 << 10
+#define N  10 << 20
 
 using namespace zeus;
 using namespace std;
