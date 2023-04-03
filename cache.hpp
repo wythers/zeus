@@ -36,7 +36,8 @@ namespace zeus {
  *    #                    ---------                #
  *    ===============================================
  *
- *  @b Requirements:
+ *  @b Requirement:
+ *  - Pool must be unique in the one project
  *  - T  
  *  - clusterSize must be a power of 2, default is 8
  * 
@@ -51,6 +52,7 @@ namespace zeus {
  * 					p.Put(single);
  * 		});
  * 		// ... code
+ * 
  * 
  *  @authors
  * 	- Stanv Chou 
