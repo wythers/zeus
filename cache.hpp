@@ -41,6 +41,7 @@ namespace zeus {
  *  - T  
  *  - clusterSize must be a power of 2, default is 8
  * 
+ *
  *  @authors
  * 	- Stanv Chou 
  *  - Wyther Yang
