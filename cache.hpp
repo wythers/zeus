@@ -20,7 +20,8 @@ using std::vector;
 
 namespace zeus {
 
-/** The zeus::Pool provides a thread-safe object pool, and Get and Put
+/**
+ * The zeus::Pool provides a thread-safe object pool, and Get and Put
  * lock-free. It uses a thread-local Cache to store the objects, Volume as a
  * scheduling unit, and Circle to manage the objects, as well as gracefully
  * construction/destruction is implemented.
@@ -498,7 +499,7 @@ class Pool {
 
       if (!ref) continue;
 
-      src = ref->getFromL3(hazards[idx]);
+      src = ref->getFromL3(hazards[myself]);
       buddies[myself].store(nullptr, RX);
     }
 
