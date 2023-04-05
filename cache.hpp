@@ -389,7 +389,7 @@ class Pool {
 
     operator bool() const noexcept { return hazards || buddies || refs || ids; }
 
-    // must ensure that the number of referenced pools is less than or equal to clusterSize,
+    // must ensure that the number of threads is less than or equal to clusterSize,
     // otherwise it's looping forever
     auto init() noexcept -> void {
       auto cur = std::this_thread::get_id();
