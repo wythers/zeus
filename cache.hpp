@@ -128,7 +128,7 @@ class Pool {
 
       auto& slot = slots[idx];
 
-      // no racing with
+      // no racing with, RX instead of RE
       T* ret = slot.exchange(nullptr, RX);
 
       return {ret, true};
@@ -212,7 +212,7 @@ class Pool {
 
     ~Cache() {
       // because the last cache's deconstruction follows the deconstruction of the pool.
-      // so must make the last cache does not access the pools that have been deconstructed.
+      // so must make the last cache does not access the pool that have been deconstructed.
       if (!last) {
         auto id = myself.load(RX);
         refs[id].store(nullptr, RX);
