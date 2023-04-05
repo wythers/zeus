@@ -462,7 +462,7 @@ class Pool {
     // clean the dirty resource
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wclass-memaccess"
-    memset(single, 1, sizeof(T));
+    memset(single, 0, sizeof(T));
     //		*single = {};
 #pragma GCC diagnostic pop
 
