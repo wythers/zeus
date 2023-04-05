@@ -94,6 +94,7 @@ class Pool {
         auto cur = headAndtail.load(RX);
         auto [head, tail] = cur;
 
+        // the circle is empty
         if (head == tail) return {nullptr, false};
 
         decltype(cur) tmp = {cur.head, cur.tail + 1};
@@ -104,6 +105,7 @@ class Pool {
       }
 
       auto& slot = slots[idx];
+      // get resource right now
       T* ret = slot.exchange(nullptr, AC);
 
       return {ret, true};
@@ -209,6 +211,8 @@ class Pool {
     Cache const& operator=(Cache const&) = delete;
 
     ~Cache() {
+      // because the last cache's deconstruction follows the deconstruction of the pool.
+      // so must make the last cache does not access the pools that have been deconstructed.
       if (!last) {
         auto id = myself.load(RX);
         refs[id].store(nullptr, RX);
@@ -312,12 +316,14 @@ class Pool {
           return nullptr;
         }
 
+        // got a zombie Volumn, give up the round
         if (next == idle) {
           top = shared.load(RX);
           continue;
         }
 
         if (shared.compare_exchange_strong(top, next, RE, RX)) {
+          hazard.store(nullptr, RX);
           if (askForBuddy(hazards, top)) {
             // GC the single volumn
             unique_ptr<Volumn> _{top};
@@ -388,7 +394,7 @@ class Pool {
 
     auto init() noexcept -> void {
       auto cur = std::this_thread::get_id();
-      for (uint i = 0;; i %= clusterSize) {
+      for (uint i = 0;; i &= (clusterSize-1)) {
         thread::id nil{};
         if (ids[i].compare_exchange_strong(nil, cur, RX, RX)) {
           myself.store(i, RX);
@@ -482,7 +488,7 @@ class Pool {
     auto myself = cache.myself.load(RX);
 
     for (uint i = 0; !src && i < clusterSize; i++) {
-      auto idx = (myself + i) % clusterSize;
+      auto idx = (myself + i) & (clusterSize-1);
       auto* ref = refs[idx].load(RX);
       Cache* swapper{};
       do {
