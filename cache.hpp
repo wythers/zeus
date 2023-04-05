@@ -327,8 +327,6 @@ class Pool {
           if (askForBuddy(hazards, top)) {
             // GC the single volumn
             unique_ptr<Volumn> _{top};
-            top = next;
-            continue;
           } else {
             top->next.store(idle, RX);
             Volumn* newV{};
@@ -336,9 +334,8 @@ class Pool {
               top->victim = newV;
             } while (!victims.compare_exchange_weak(newV, top, RE, RX));
           }
+          top = next;
         }
-
-        top = shared.load(RX);
       }
     }
 
@@ -392,6 +389,8 @@ class Pool {
 
     operator bool() const noexcept { return hazards || buddies || refs || ids; }
 
+    // must ensure that the number of referenced pools is less than or equal to clusterSize,
+    // otherwise it's looping forever
     auto init() noexcept -> void {
       auto cur = std::this_thread::get_id();
       for (uint i = 0;; i &= (clusterSize-1)) {
